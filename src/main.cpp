@@ -51,8 +51,12 @@ int main() {
         vector<string> tokens;
         tokenize(line, tokens);
 
-        if(line == MAIN_ENTRYPOINT)
+        if(line == "" || line == "\n") continue;
+
+        if(line == MAIN_ENTRYPOINT) {
             has_entered_main = true;
+            continue;
+        }
 
         if(has_entered_main) {
             if(tokens.size() > 2 || tokens.size() < 1)
