@@ -27,10 +27,11 @@ void tokenize(string const &str, vector<string> &out) {
 int main() {
     stack<int> vm;
 
-    cout<<"Enter bytecode to execute on stack VM (type 'exit' to exit)-"<<endl;
+    ifstream infile("./sample/test.noobvm");
 
     string line;
-    while (getline(cin, line) && line != "exit") {
+    while (getline(infile, line) && line != "exit") {
+        cout<<line<<endl;
         vector<string> tokens;
         tokenize(line, tokens);
 
@@ -43,7 +44,7 @@ int main() {
         struct Instruction instruction = find_instruction_by_opcode(opcode);
         instruction.execute(operand, vm);
 
-        cout<<"\n[OPERATION EXEC] "<<instruction.name<<endl;
+        cout<<"[OPERATION EXEC] "<<instruction.name<<endl;
     }
 
     if(vm.size() > 1)
