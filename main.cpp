@@ -3,25 +3,38 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+void traverse_stack(stack<int> & st) {
+    if(st.empty())
+        return;
+    int x = st.top();
+    cout << x << " ";
+    st.pop();
+    traverse_stack(st);
+    st.push(x);
+}
+
 int main() {
     stack<int> vm;
 
-    cout<<"push 1"<<endl;
-    vm.push(1);
-    cout<<"push 2"<<endl;
-    vm.push(2);
-    cout<<"add"<<endl;
+    cout<<"0 1"<<endl;
+    cout<<"0 2"<<endl;
+    cout<<"1"<<endl;
+    cout<<"---------"<<endl;
 
-    // struct Instruction ins = {0,"add",2,add};
-    // cout<<"-------"<<endl;
+    struct Instruction push = find_instruction_by_opcode(0);
+    struct Instruction add = find_instruction_by_opcode(1);
 
-    // vector<int> args;
-    // int num_args = ins.num_args;
-    // while(num_args--) {
-    //     args.push_back(vm.top());
-    //     vm.pop();
-    // }
+    push.execute(1, vm);
+    push.execute(2, vm);
 
-    // cout<<"Result of "<<ins.name<<" is "<<ins.execute(args);
+    cout<<"INITIAL STATE\n";
+    traverse_stack(vm);
+
+    cout<<endl<<endl;
+
+    cout<<"FINAL STATE\n";
+    add.execute(0, vm);
+    traverse_stack(vm);
+
     return 0;
 }

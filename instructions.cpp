@@ -33,7 +33,7 @@ void exec_push(int arg, stack<int>& vm) {
 }
 
 void exec_add(int arg, stack<int>& vm) {
-    if(vm.size() <= ADD_ARG_COUNT)
+    if(vm.size() < ADD_ARG_COUNT)
         throw invalid_argument("[ADD] STACK OUT OF BOUNDS");
 
     vector<int> args = pop_vm_elements(vm, ADD_ARG_COUNT);
@@ -57,21 +57,17 @@ struct Instruction add = {ADD_OPCODE, "add", ADD_ARG_COUNT, exec_add};
  * instruction table init 
  */
 map<int, struct Instruction> instructions_table = {
-    {ADD_OPCODE, add},
-    {PUSH_OPCODE, push}
+    {PUSH_OPCODE, push},
+    {ADD_OPCODE, add}
 };
 
 /**
  * util functions for instruction table
  */
 struct Instruction find_instruction_by_opcode(int opcode) {
-    for(
-        map<int, struct Instruction>::iterator it = instructions_table.begin(); 
-        it != instructions_table.end(); 
-        it++
-    ) {
-        if(opcode == it->first) return it->second;
+    if (instructions_table.find(opcode) == instructions_table.end()) {
+        throw invalid_argument("OPCODE NOT FOUND:" + to_string(opcode));
+    } else {
+        return instructions_table.at(opcode);
     }
-
-    throw invalid_argument("OPCODE NOT FOUND:" + to_string(opcode));
 }
