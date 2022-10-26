@@ -24,3 +24,11 @@ struct Instruction {
 std::map<int, struct Instruction> instructions_table;
 
 #endif
+
+#ifndef INSTRUCTION_MAP_HELPER_H
+#define INSTRUCTION_MAP_HELPER_H
+
+struct Instruction find_instruction_by_opcode(int opcode);
+
+#endif
+

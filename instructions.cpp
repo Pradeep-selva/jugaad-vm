@@ -13,6 +13,7 @@ const int ADD_OPCODE = 1;
 const int PUSH_ARG_COUNT = 0;
 const int ADD_ARG_COUNT = 2;
 
+// helper
 vector<int> pop_vm_elements(stack<int>& vm, int num_args) {
     vector<int> args;
 
@@ -24,6 +25,9 @@ vector<int> pop_vm_elements(stack<int>& vm, int num_args) {
     return args;
 }
 
+/**
+ * opcode executor functions
+ */
 void exec_push(int arg, stack<int>& vm) {
     vm.push(arg);
 }
@@ -43,10 +47,31 @@ void exec_add(int arg, stack<int>& vm) {
     vm.push(sum);
 }
 
+/**
+ * opcode definitions 
+ */
 struct Instruction push = {PUSH_OPCODE, "push", PUSH_ARG_COUNT, exec_push};
 struct Instruction add = {ADD_OPCODE, "add", ADD_ARG_COUNT, exec_add};
 
+/**
+ * instruction table init 
+ */
 map<int, struct Instruction> instructions_table = {
     {ADD_OPCODE, add},
     {PUSH_OPCODE, push}
 };
+
+/**
+ * util functions for instruction table
+ */
+struct Instruction find_instruction_by_opcode(int opcode) {
+    for(
+        map<int, struct Instruction>::iterator it = instructions_table.begin(); 
+        it != instructions_table.end(); 
+        it++
+    ) {
+        if(opcode == it->first) return it->second;
+    }
+
+    throw invalid_argument("OPCODE NOT FOUND:" + to_string(opcode));
+}
