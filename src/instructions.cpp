@@ -117,7 +117,7 @@ map<int, struct Instruction> instructions_table = {
 struct Instruction find_instruction_by_opcode(int opcode) {
     if (instructions_table.find(opcode) == instructions_table.end()) {
         throw invalid_argument("OPCODE NOT FOUND:" + to_string(opcode));
-    } else {
-        return instructions_table.at(opcode);
     }
+    
+    return instructions_table.at(opcode);
 }
