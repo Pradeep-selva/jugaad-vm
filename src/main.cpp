@@ -1,5 +1,5 @@
-#include "instructions.h"
-#include "labels.h"
+#include "headers/instructions.h"
+#include "headers/labels.h"
 
 #include<bits/stdc++.h>
 #include<boost/algorithm/string.hpp>

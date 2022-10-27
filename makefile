@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	@ g++ src/*.cpp -o main -std=c++11
+	@ g++ -I src/headers/ src/headers/*cpp src/*.cpp -o main -std=c++11
 
 .PHONY: exec
 exec:
