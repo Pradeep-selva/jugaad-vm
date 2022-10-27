@@ -62,7 +62,7 @@ int main() {
 
                 default:
                     throw invalid_argument(
-                        "[PARSER] INVALID OPERAND PROVIDED. DOES NOT START WITH '@' OR '#'"
+                        "[PARSER] INVALID OPERAND PROVIDED. DOES NOT START WITH '@', '#', '>'"
                     );
             }
 
@@ -74,6 +74,7 @@ int main() {
                     labels, 
                     make_pair(relevant_operand, op_result)
                 );
+                cout<<"[LABEL] WRITTEN OP RESULT TO: "<<relevant_operand<<endl;
             }
 
             cout<<"[OPERATION EXEC] "<<instruction.name<<endl;
