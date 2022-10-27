@@ -1,5 +1,8 @@
+#include "config/globals.h"
+
 #include "core/instructions.h"
 #include "core/labels.h"
+#include "core/common.h"
 
 #include<bits/stdc++.h>
 #include <stdexcept>
@@ -7,34 +10,6 @@
 
 using namespace std;
 
-// program sections
-const string MAIN_ENTRYPOINT = "main:";
-
-/**
- * HELPERS
- */
-void traverse_stack(stack<int> & st) {
-    if(st.empty())
-        return;
-    int x = st.top();
-    cout << x << " ";
-    st.pop();
-    traverse_stack(st);
-    st.push(x);
-}
-
-void tokenize(string const &str, vector<string> &out) {
-    stringstream ss(str);
-    string word;
-
-    while (ss >> word) {
-        out.push_back(word);
-    }
-}
-
-/**
- * MAIN FUNCTION
- */
 int main() {
     stack<int> vm;
     map<string, int> labels;
