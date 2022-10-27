@@ -2,7 +2,6 @@ num1 13
 num2 3
 
 main:
-
 0 @num1
 0 @num2
 2
@@ -11,7 +10,11 @@ main:
 0 #2
 3
 0 @res
-4
-0 #0
-9
-:eop
+4 >out
+0 #1
+7
+? #3
+0 @out
+0 #2
+3
+:niam

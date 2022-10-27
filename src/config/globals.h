@@ -4,7 +4,7 @@
 #define GLOBAL_H
 
 const std::string MAIN_ENTRYPOINT = "main:";
-const std::string MAIN_EXITPOINT = ":eop";
+const std::string MAIN_EXITPOINT = ":niam";
 const std::string SKIP_WRITE_OPERAND = ">?";
 
 #endif

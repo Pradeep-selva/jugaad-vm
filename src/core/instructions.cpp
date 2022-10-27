@@ -9,6 +9,7 @@ using namespace std;
  * opcodes for instructions
 */
 // stack ops
+const int IDLE_OPCODE = -1;
 const int PUSH_OPCODE = 0;
 // arithmetic ops
 const int ADD_OPCODE = 1;
@@ -49,6 +50,10 @@ void validate_arg_count(stack<int> vm, int num_args = ARITHMETIC_ARG_COUNT) {
 /**
  * opcode executor functions
  */
+int exec_idle(int arg, stack<int>& vm) {
+    return 0;
+}
+
 int exec_push(int arg, stack<int>& vm) {
     vm.push(arg);
     return 0;
@@ -169,6 +174,7 @@ int exec_gte(int arg, stack<int>& vm) {
  */
 // stack ops
 struct Instruction push = {PUSH_OPCODE, "push", PUSH_ARG_COUNT, false, exec_push};
+struct Instruction idle = {IDLE_OPCODE, "idle", PUSH_ARG_COUNT, false, exec_idle};
 // arithmetic ops
 struct Instruction add = {ADD_OPCODE, "add", ARITHMETIC_ARG_COUNT, true, exec_add};
 struct Instruction sub = {SUB_OPCODE, "sub", ARITHMETIC_ARG_COUNT, true, exec_sub};
@@ -186,6 +192,7 @@ struct Instruction gte = {GTE_OPCODE, "gte", ARITHMETIC_ARG_COUNT, false, exec_g
  * instruction table init 
  */
 map<int, struct Instruction> instructions_table = {
+    {IDLE_OPCODE, idle},
     {PUSH_OPCODE, push},
     {ADD_OPCODE, add},
     {SUB_OPCODE, sub},

@@ -38,9 +38,10 @@ int main() {
         if(has_entered_main) {
             check_token_size(tokens);
 
-            int operand;
-            int opcode = stoi(tokens.at(0));
+            int opcode = is_token_numeric(tokens.at(0)) ? stoi(tokens.at(0)): -1;
+            struct Instruction instruction = find_instruction_by_opcode(opcode);
 
+            int operand;
             string raw_operand = tokens.size() == 2 ? tokens.at(1): SKIP_WRITE_OPERAND;
             string relevant_operand = extract_operand(raw_operand);            
 
@@ -57,6 +58,9 @@ int main() {
                     break;
 
                 case '>':
+                    if(!instruction.write_to_label && relevant_operand != "?")
+                        throw invalid_argument("[PARSER] > OPERAND NOT SUPPORTED FOR THIS OPCODE");
+
                     operand = 0;
                     break;
 
@@ -66,7 +70,19 @@ int main() {
                     );
             }
 
-            struct Instruction instruction = find_instruction_by_opcode(opcode);
+            if(tokens.at(0) == "?") {
+                bool is_true = vm.top() == 1;
+
+                if (!is_true) {
+                    for(int i = 0; i <= operand; i++) 
+                        getline(infile, line);
+                } else {
+                    vm.pop();
+                }
+
+                continue;
+            }
+
             int op_result = instruction.execute(operand, vm);
 
             if(instruction.write_to_label && raw_operand != SKIP_WRITE_OPERAND) {
