@@ -20,7 +20,7 @@ int main() {
     string line;
     bool has_entered_main = false;
 
-    while (getline(infile, line) && line != "exit") {
+    while (getline(infile, line) && line != MAIN_EXITPOINT) {
         boost::trim_right(line);
         boost::trim_left(line);
 
