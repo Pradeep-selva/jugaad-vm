@@ -1,4 +1,5 @@
 #include "instructions.h"
+#include "labels.h"
 
 #include<bits/stdc++.h>
 #include<boost/algorithm/string.hpp>
@@ -67,20 +68,15 @@ int main() {
             
             int operand;
             if(raw_operand[0] == '#') {
-               string relevant_operand = raw_operand.substr(1, raw_operand.length()-1);
+               string relevant_operand = extract_operand(raw_operand);
                
                if(!all_of(relevant_operand.begin(), relevant_operand.end(), ::isdigit))
                 throw invalid_argument("[PARSER] # OPERAND CAN ONLY CONTAIN DIGITS"); 
 
                 operand = stoi(relevant_operand);
             } else if (raw_operand[0] == '@') {
-                string relevant_operand = raw_operand.substr(1, raw_operand.length()-1);
-
-                if (labels.find(relevant_operand) == labels.end()) {
-                    throw invalid_argument("LABEL NOT FOUND:" + relevant_operand);
-                }
-                
-                operand = labels.at(relevant_operand);
+                string relevant_operand = extract_operand(raw_operand);
+                operand = get_operand_from_label_if_exists(labels, relevant_operand);
             } else {
                 throw invalid_argument("[PARSER] INVALID OPERAND PROVIDED. DOES NOT START WITH '@' OR '#'");
             }
@@ -93,7 +89,7 @@ int main() {
             if(tokens.size() != 2 || !all_of(tokens.at(1).begin(), tokens.at(1).end(), ::isdigit))
                 throw invalid_argument("[PARSER] INVALID INPUT OF LABELS");
 
-            labels.insert(make_pair(tokens.at(0), stoi(tokens.at(1))));
+            insert_label_if_unique(labels, make_pair(tokens.at(0), stoi(tokens.at(1))));
         }
     }
 
@@ -101,7 +97,6 @@ int main() {
        throw invalid_argument("[EXECUTOR] COULD NOT RESOLVE TO A SINGLE OUTPUT"); 
 
     cout<<"\n--------------------"<<endl;
-
     cout<<"FINAL VM STATE\n";
     cout<<"--------------------"<<endl;
     traverse_stack(vm);
