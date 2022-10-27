@@ -5,8 +5,8 @@
 #include "core/common.h"
 #include "core/validators.h"
 
-#include<bits/stdc++.h>
 #include <stdexcept>
+#include<bits/stdc++.h>
 #include<boost/algorithm/string.hpp>
 
 using namespace std;
@@ -38,26 +38,43 @@ int main() {
         if(has_entered_main) {
             check_token_size(tokens);
 
-            int opcode = stoi(tokens.at(0));
-            string raw_operand = tokens.size() == 2 ? tokens.at(1): "#0";
-            
             int operand;
-            if(raw_operand[0] == '#') {
-               string relevant_operand = extract_operand(raw_operand);
-               
-               if(!is_token_numeric(relevant_operand))
-                throw invalid_argument("[PARSER] # OPERAND CAN ONLY CONTAIN DIGITS"); 
+            int opcode = stoi(tokens.at(0));
 
-                operand = stoi(relevant_operand);
-            } else if (raw_operand[0] == '@') {
-                string relevant_operand = extract_operand(raw_operand);
-                operand = get_operand_from_label_if_exists(labels, relevant_operand);
-            } else {
-                throw invalid_argument("[PARSER] INVALID OPERAND PROVIDED. DOES NOT START WITH '@' OR '#'");
+            string raw_operand = tokens.size() == 2 ? tokens.at(1): SKIP_WRITE_OPERAND;
+            string relevant_operand = extract_operand(raw_operand);            
+
+            switch(raw_operand[0]) {
+                case '#':
+                    if(!is_token_numeric(relevant_operand))
+                        throw invalid_argument("[PARSER] # OPERAND CAN ONLY CONTAIN DIGITS"); 
+
+                    operand = stoi(relevant_operand);
+                    break;
+                
+                case '@':
+                    operand = get_operand_from_label_if_exists(labels, relevant_operand);
+                    break;
+
+                case '>':
+                    operand = 0;
+                    break;
+
+                default:
+                    throw invalid_argument(
+                        "[PARSER] INVALID OPERAND PROVIDED. DOES NOT START WITH '@' OR '#'"
+                    );
             }
 
             struct Instruction instruction = find_instruction_by_opcode(opcode);
-            instruction.execute(operand, vm);
+            int op_result = instruction.execute(operand, vm);
+
+            if(instruction.write_to_label && raw_operand != SKIP_WRITE_OPERAND) {
+                insert_label_if_unique(
+                    labels, 
+                    make_pair(relevant_operand, op_result)
+                );
+            }
 
             cout<<"[OPERATION EXEC] "<<instruction.name<<endl;
         } else {

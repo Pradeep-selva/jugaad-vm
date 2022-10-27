@@ -16,7 +16,9 @@ const int DIV_OPCODE = 4;
 const int PUSH_ARG_COUNT = 0;
 const int ARITHMETIC_ARG_COUNT = 2;
 
-// helper
+/**
+ * executor helpers
+ */
 vector<int> pop_vm_elements(stack<int>& vm, int num_args) {
     vector<int> args;
 
@@ -31,11 +33,12 @@ vector<int> pop_vm_elements(stack<int>& vm, int num_args) {
 /**
  * opcode executor functions
  */
-void exec_push(int arg, stack<int>& vm) {
+int exec_push(int arg, stack<int>& vm) {
     vm.push(arg);
+    return 0;
 }
 
-void exec_add(int arg, stack<int>& vm) {
+int exec_add(int arg, stack<int>& vm) {
     if(vm.size() < ARITHMETIC_ARG_COUNT)
         throw invalid_argument("[ADD] STACK OUT OF BOUNDS");
 
@@ -48,22 +51,21 @@ void exec_add(int arg, stack<int>& vm) {
     }
 
     vm.push(sum);
+    return sum;
 }
 
-void exec_sub(int arg, stack<int>& vm) {
+int exec_sub(int arg, stack<int>& vm) {
    if(vm.size() < ARITHMETIC_ARG_COUNT)
         throw invalid_argument("[ADD] STACK OUT OF BOUNDS");
 
     vector<int> args = pop_vm_elements(vm, ARITHMETIC_ARG_COUNT);
+    int result = args[1] - args[0];
 
-    int subtract_from = args.back();
-    args.pop_back();
-    int subtract_value = args.back();
-
-    vm.push(subtract_from - subtract_value);
+    vm.push(result);
+    return result;
 }
 
-void exec_mul(int arg, stack<int>& vm) {
+int exec_mul(int arg, stack<int>& vm) {
     if(vm.size() < ARITHMETIC_ARG_COUNT)
         throw invalid_argument("[ADD] STACK OUT OF BOUNDS");
 
@@ -76,29 +78,28 @@ void exec_mul(int arg, stack<int>& vm) {
     }
 
     vm.push(product);
+    return product;
 }
 
-void exec_div(int arg, stack<int>& vm) {
+int exec_div(int arg, stack<int>& vm) {
    if(vm.size() < ARITHMETIC_ARG_COUNT)
         throw invalid_argument("[ADD] STACK OUT OF BOUNDS");
 
     vector<int> args = pop_vm_elements(vm, ARITHMETIC_ARG_COUNT);
+    int result = (int)(args[1] / args[0]);
 
-    int divide_value = args.back();
-    args.pop_back();
-    int divide_by = args.back();
-
-    vm.push((int)(divide_value / divide_by));
+    vm.push(result);
+    return result;
 }
 
 /**
  * opcode definitions 
  */
-struct Instruction push = {PUSH_OPCODE, "push", PUSH_ARG_COUNT, exec_push};
-struct Instruction add = {ADD_OPCODE, "add", ARITHMETIC_ARG_COUNT, exec_add};
-struct Instruction sub = {SUB_OPCODE, "sub", ARITHMETIC_ARG_COUNT, exec_sub};
-struct Instruction mul = {MUL_OPCODE, "mul", ARITHMETIC_ARG_COUNT, exec_mul};
-struct Instruction _div = {DIV_OPCODE, "div", ARITHMETIC_ARG_COUNT, exec_div};
+struct Instruction push = {PUSH_OPCODE, "push", PUSH_ARG_COUNT, false, exec_push};
+struct Instruction add = {ADD_OPCODE, "add", ARITHMETIC_ARG_COUNT, true, exec_add};
+struct Instruction sub = {SUB_OPCODE, "sub", ARITHMETIC_ARG_COUNT, true, exec_sub};
+struct Instruction mul = {MUL_OPCODE, "mul", ARITHMETIC_ARG_COUNT, true, exec_mul};
+struct Instruction _div = {DIV_OPCODE, "div", ARITHMETIC_ARG_COUNT, true, exec_div};
 
 /**
  * instruction table init 

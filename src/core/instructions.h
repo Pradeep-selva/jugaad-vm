@@ -11,8 +11,9 @@ struct Instruction {
     int op_code;
     std::string name;
     int num_args;
+    bool write_to_label;
     std::function<
-        void (int arg, std::stack<int>& vm)
+        int (int arg, std::stack<int>& vm)
     > execute;
 };
 
