@@ -1,9 +1,9 @@
-#include "headers/instructions.h"
-#include "headers/labels.h"
+#include "core/instructions.h"
+#include "core/labels.h"
 
 #include<bits/stdc++.h>
-#include<boost/algorithm/string.hpp>
 #include <stdexcept>
+#include<boost/algorithm/string.hpp>
 
 using namespace std;
 
