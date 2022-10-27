@@ -3,6 +3,7 @@
 #include "core/instructions.h"
 #include "core/labels.h"
 #include "core/common.h"
+#include "core/validators.h"
 
 #include<bits/stdc++.h>
 #include <stdexcept>
@@ -35,8 +36,7 @@ int main() {
         }
 
         if(has_entered_main) {
-            if(tokens.size() > 2 || tokens.size() < 1)
-                throw invalid_argument("[PARSER] INVALID NUMBER OF TOKENS RECEIVED");
+            check_token_size(tokens);
 
             int opcode = stoi(tokens.at(0));
             string raw_operand = tokens.size() == 2 ? tokens.at(1): "#0";
@@ -45,7 +45,7 @@ int main() {
             if(raw_operand[0] == '#') {
                string relevant_operand = extract_operand(raw_operand);
                
-               if(!all_of(relevant_operand.begin(), relevant_operand.end(), ::isdigit))
+               if(!is_token_numeric(relevant_operand))
                 throw invalid_argument("[PARSER] # OPERAND CAN ONLY CONTAIN DIGITS"); 
 
                 operand = stoi(relevant_operand);
@@ -61,7 +61,7 @@ int main() {
 
             cout<<"[OPERATION EXEC] "<<instruction.name<<endl;
         } else {
-            if(tokens.size() != 2 || !all_of(tokens.at(1).begin(), tokens.at(1).end(), ::isdigit))
+            if(tokens.size() != 2 || !is_token_numeric(tokens.at(1)))
                 throw invalid_argument("[PARSER] INVALID INPUT OF LABELS");
 
             insert_label_if_unique(labels, make_pair(tokens.at(0), stoi(tokens.at(1))));
