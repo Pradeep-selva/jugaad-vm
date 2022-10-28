@@ -15,7 +15,7 @@ int main() {
     stack<int> vm;
     map<string, int> labels;
 
-    ifstream infile("./sample/test.noobvm");
+    ifstream infile("./sample/test.jvm");
 
     string line;
     bool has_entered_main = false;
